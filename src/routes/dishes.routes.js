@@ -27,4 +27,4 @@ dishesRoutes.patch("/avatar/:id", upload.single("avatar"), dishAvatarController.
 //dishesRoutes.post("/avatar", upload.single("avatar"), dishAvatarController.create);
 
 
-module.exports = dishesRoutes; 
+module.exports = dishesRoutes;  

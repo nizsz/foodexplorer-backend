@@ -19,16 +19,19 @@ class DishAvatarController {
   };
 
   async update (request, response) {
-    const {id} = request.params;
+    const { id } = request.params;
     const avatarFileName = request.file.filename;
- 
+
+    
     const diskStorage = new DiskStorage() 
 
     const dish = await knex("dishes")
     .where({ id }).first();
 
+
+    
     if(!dish) {
-      throw new AppError("Somente um admin autenticado pode alterar a foto!", 401);
+      throw new AppError("Prato não encontrado!", 401);
     };
 
     if(dish.avatar){
@@ -38,10 +41,10 @@ class DishAvatarController {
     const filename = await diskStorage.saveFile(avatarFileName);
     dish.avatar = filename;
 
-    await knex("dishes").update(dish).where({id});
+    await knex("dishes").where({id}).update(dish);
 
     return response.json(dish);
-  }
+  } 
 };
 
 module.exports = DishAvatarController;

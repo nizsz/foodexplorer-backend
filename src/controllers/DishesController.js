@@ -24,10 +24,10 @@ class DishesController{
       user_id,
       title,
       description,
-      price,
+      price, 
       avatar: filename,
       category,  
-      created_at, 
+      created_at,  
       updated_at 
     }); 
      
@@ -53,8 +53,9 @@ class DishesController{
   };
  
   async update(request, response) {
-    const {title, description, price, category} = request.body;
+    const {title, description, price, category, ingredients} = request.body;
     const { id } = request.params;
+    const user_id = request.user.id;
 
     const date = new Date();
     const hours = date.toLocaleTimeString();
@@ -68,20 +69,41 @@ class DishesController{
     };
 
     const dishWhithUpdatedTitle = await knex("dishes").where({title}).first();
-    console.log(dishWhithUpdatedTitle)
 
     if(dishWhithUpdatedTitle && dishWhithUpdatedTitle.title === dish.title) {
       throw new AppError("O título do prato já está em uso")
     };
 
-    dish.title = title ?? dish.title;
-    dish.description = description ?? dish.description;
-    dish.price = price ?? dish.price;
-    dish.category = category ?? dish.category;
+
+    dish.title = title === "" ? dish.title : title;
+    dish.description = description === "" ? dish.description : description;
+    dish.price = price === "" ? dish.price : price;
+    dish.category = category === "" ? dish.category : category;
+    
     
     await knex("dishes").where({id}).update(dish);
     await knex("dishes").where({id}).update({updated_at});
 
+
+    const newIngredient = await knex("ingredients").where({dish_id: id});
+    
+    const ingredientsInsert = ingredients.map(ingredient => {  
+      if(newIngredient && newIngredient.name !== ingredient){
+        return {
+          name: ingredient,
+          dish_id: id,
+          user_id,
+        }
+      }
+    });
+
+    
+   if (ingredients.length > 0){
+
+      await knex("ingredients").insert(ingredientsInsert);
+    }
+
+  
     return response.status(200).json();
   };
 
@@ -99,18 +121,9 @@ class DishesController{
     })
   };
 
-  async delete(request,response){
-    const {id}= request.params;
-
-    await knex("dishes").where({id}).delete();
-    
-    return response.json();
-  };
-
   async index (request, response) {
     const { title, ingredients } = request.query;
     const user_id = request.user.id;
-
     
     let dishes;
 
@@ -151,6 +164,15 @@ class DishesController{
 
     return response.json(dishesWithIngredients)
   };
-};
+
+  async delete(request, response){
+    const {id}= request.params;
+
+    await knex("dishes").where({id}).delete();
+
+    return response.json();
+  };
+
+}; 
 
 module.exports = DishesController;

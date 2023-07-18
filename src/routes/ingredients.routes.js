@@ -9,5 +9,6 @@ const IngredientsController = require("../controllers/IngredientsController");
 const ingredientsController = new IngredientsController();
 
 ingredientsRoutes.get("/", ensureAuthenticated ,checkingIfUserIsAdmin, ingredientsController.index);
+ingredientsRoutes.delete("/", ensureAuthenticated ,checkingIfUserIsAdmin, ingredientsController.delete);
 
 module.exports = ingredientsRoutes;
