@@ -54,3 +54,7 @@ In this project i learned;
 - Difference between NPM and NPX.
 
 ## :memo: License
+
+This project is lincensed under [MIT](https://choosealicense.com/licenses/mit/) .
+
+---
