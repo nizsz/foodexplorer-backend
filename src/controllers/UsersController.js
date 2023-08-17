@@ -33,11 +33,13 @@ class UsersController {
     }; 
  
     const hashedPassword = await hash(password, 8);
+    const notAdmin = 0;
 
     await database.run(
-      "INSERT INTO users (name, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
-        [name, email, hashedPassword, created_at, updated_at]
+      "INSERT INTO users (name, email, password, created_at, updated_at, isAdmin) VALUES (?, ?, ?, ?, ?, ?)",
+        [name, email, hashedPassword, created_at, updated_at, notAdmin]
       );
+
 
     return response.status(201).json();
   }

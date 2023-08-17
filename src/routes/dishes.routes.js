@@ -15,16 +15,15 @@ const dishesController = new DishesController();
 const upload = multer(uploadConfig.MULTER);
 
 dishesRoutes.use(ensureAuthenticated);
-dishesRoutes.use(checkingIfUserIsAdmin);
+//dishesRoutes.use(checkingIfUserIsAdmin);
 
 dishesRoutes.get("/",  dishesController.index);
-dishesRoutes.post("/", upload.single("avatar"), dishesController.create);
-dishesRoutes.put("/:id",  dishesController.update);
-dishesRoutes.get("/:id",  dishesController.show);
-dishesRoutes.delete("/:id",  dishesController.delete);
-dishesRoutes.patch("/avatar/:id", upload.single("avatar"), dishAvatarController.update);
+dishesRoutes.post("/", checkingIfUserIsAdmin, upload.single("avatar"), dishesController.create);
+dishesRoutes.put("/:id", checkingIfUserIsAdmin, dishesController.update);
+dishesRoutes.get("/:id", dishesController.show);
+dishesRoutes.delete("/:id", checkingIfUserIsAdmin, dishesController.delete);
+dishesRoutes.patch("/avatar/:id", checkingIfUserIsAdmin, upload.single("avatar"), dishAvatarController.update);
 
-//dishesRoutes.post("/avatar", upload.single("avatar"), dishAvatarController.create);
 
 
 module.exports = dishesRoutes;  

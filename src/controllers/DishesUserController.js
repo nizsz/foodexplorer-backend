@@ -25,7 +25,7 @@ class DishesUserController {
     } else {
 
       dishes = await knex("dishes")
-      .whereLike( "title", `%${title}%`)
+      .whereLike("title", `%${title}%`)
       .orderBy("title")
       
     }

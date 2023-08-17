@@ -6,14 +6,14 @@ class DishAvatarController {
   async create (request, response) {
     const user_id = request.user.id;
 
-    console.log(request.file)
     const dishFilename = request.file.filename;
     // Instanciando o diskstorage
     const diskStorage = new DiskStorage()
     // Caso ainda não exista
-    const filename = await diskStorage.saveFile(dishFilename);
+    const avatar = await diskStorage.saveFile(dishFilename);
+    console.log(avatar)
 
-    await knex("dishes").insert({avatar:filename}).where({user_id})
+    await knex("dishes").insert({avatar});
 
     return response.json()
   };
@@ -29,7 +29,6 @@ class DishAvatarController {
     .where({ id }).first();
 
 
-    
     if(!dish) {
       throw new AppError("Prato não encontrado!", 401);
     };

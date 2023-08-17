@@ -15,23 +15,25 @@ class DishesController{
     
 
     const dishFilename = request.file.filename;
-    // Instanciando o diskstorage
+    
     const diskStorage = new DiskStorage()
-    // Caso ainda não exista
-    const filename = await diskStorage.saveFile(dishFilename);
+    
+    const avatar = await diskStorage.saveFile(dishFilename);
+
 
     const [dish_id] = await knex("dishes").insert({
       user_id,
       title,
       description,
       price, 
-      avatar: filename,
+      avatar,
       category,  
       created_at,  
       updated_at 
     }); 
-     
-    const ingredientsInsert = ingredients.map(ingredient => {
+  
+    const ingredientsArray = JSON.parse(ingredients)
+    const ingredientsInsert = ingredientsArray.map(ingredient => {
       return {
         dish_id,
         name: ingredient,
@@ -39,7 +41,11 @@ class DishesController{
       }
     })
 
-    await knex("ingredients").insert(ingredientsInsert);
+    
+    if(ingredients.length > 0) {
+      await knex("ingredients").insert(ingredientsInsert);
+    }
+    
 
     await knex("category").insert({
       dish_id,
@@ -56,7 +62,7 @@ class DishesController{
     const {title, description, price, category, ingredients} = request.body;
     const { id } = request.params;
     const user_id = request.user.id;
-
+ 
     const date = new Date();
     const hours = date.toLocaleTimeString();
     const day = date.toLocaleDateString();
@@ -98,7 +104,7 @@ class DishesController{
     });
 
     
-   if (ingredients.length > 0){
+    if (ingredients.length > 0){
 
       await knex("ingredients").insert(ingredientsInsert);
     }

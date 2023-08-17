@@ -2,17 +2,21 @@ const knex = require("../database/knex");
 const AppError = require("../utils/AppError");
 
 async function checkingIfUserIsAdmin (request, response, next) {
-  const isAdmin = await knex("users").select("email").whereLike("email", `%admin%`).orderBy("email");  
+  const user_id = request.user.id;
 
-  if(!isAdmin) {
-    throw new AppError("Somente um usuário Admin pode criar ou alterar o prato!", 401); 
-  };
-  
-  if(isAdmin) {
-    return next();
+  try {
+    const user = await knex("users").where("id", user_id).first();
+
+    if(user && user.isAdmin === 1) {
+      return next();
+    }else {
+      throw new AppError("Acesso não autorizado.", 401);
+    }
+  } catch (error) {
+    throw new AppError("Erro ao verificar o usuário.", 500);
   }
   
-  return response()
+   return response();
 }; 
  
 module.exports = checkingIfUserIsAdmin
