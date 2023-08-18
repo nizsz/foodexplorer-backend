@@ -12,7 +12,9 @@ const createUserAdmin = async() => {
     if(!adminUser) {
       const newUserAdmin = {email: adminUserEmail, isAdmin: isAdmin, password: await hash(adminPassword, 10)};
       await knex("users").insert(newUserAdmin);
-    }
+    }else if(adminUser) {
+      return
+    };
 
   } catch (error) {
     console.error("Failed to create admin user:", error);
