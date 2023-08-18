@@ -14,11 +14,11 @@ class DishesController{
     const updated_at = `${day} às ${hours}`;
     
 
-    const dishFilename = request.file.filename;
+    //const dishFilename = request.file.filename;
     
-    const diskStorage = new DiskStorage()
+    //const diskStorage = new DiskStorage()
     
-    const avatar = await diskStorage.saveFile(dishFilename);
+    //const avatar = await diskStorage.saveFile(dishFilename);
 
 
     const [dish_id] = await knex("dishes").insert({
@@ -26,7 +26,7 @@ class DishesController{
       title,
       description,
       price, 
-      avatar,
+      //avatar,
       category,  
       created_at,  
       updated_at 
