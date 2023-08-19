@@ -1,6 +1,6 @@
 const knex = require("../database/knex");
 const AppError = require("../utils/AppError");
-const DiskStorage = require("../providers/DiskStorage");
+const ImageService = require("../providers/ImageService");
 
 class DishesController{
   async create(request, response) {
@@ -12,14 +12,9 @@ class DishesController{
     const day = date.toLocaleDateString();
     const created_at = `${day} às ${hours}`;
     const updated_at = `${day} às ${hours}`;
-    
 
-    const dishFilename = request.file.filename;
-    
-    const diskStorage = new DiskStorage()
-    
-    const avatar = await diskStorage.saveFile(dishFilename);
-
+    const imageService = new ImageService;
+    const avatar = await imageService.saveFile(request.file);
 
     const [dish_id] = await knex("dishes").insert({
       user_id,

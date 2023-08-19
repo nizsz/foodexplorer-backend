@@ -10,8 +10,9 @@ async function migrationsRun(){
   sqliteConnection()
   .then(db => db.exec(schemas))
   .catch(error => console.error(error))
+
+  await createUserAdmin(); 
 };
 
-createUserAdmin();
 
 module.exports = migrationsRun;
