@@ -10,8 +10,9 @@ async function sqliteConnection() {
     driver: sqlite3.Database
   });
   
-  await createUserAdmin(); 
   return database
 };
+
+createUserAdmin(); 
 
 module.exports = sqliteConnection;
