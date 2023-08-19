@@ -1,4 +1,3 @@
-const createUserAdmin = require("../../../utils/CreateUserAdmin");
 const sqliteConnection = require("../../sqlite");
 const createUsers = require("./createUsers");
 
@@ -11,7 +10,6 @@ async function migrationsRun(){
   .then(db => db.exec(schemas))
   .catch(error => console.error(error))
 
-  await createUserAdmin(); 
 };
 
 
