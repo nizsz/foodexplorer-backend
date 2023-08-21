@@ -15,8 +15,6 @@ class DishesController{
 
     const imageService = new ImageService;
     const avatar = await imageService.saveFile(request.file);
-    console.log(avatar)
-    console.log(request.file)
 
     const [dish_id] = await knex("dishes").insert({
       user_id,
