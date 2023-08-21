@@ -4,13 +4,13 @@ const uploadConfig = require("../configs/upload");
 
 class ImageService {
   async saveFile(file) {
-    const { avatar } = file;
-    const filePath = path.resolve(uploadConfig.TMP_FOLDER, avatar);
-    const newFilePath = path.resolve(uploadConfig.UPLOADS_FOLDER, avatar);
+    const { filename } = file;
+    const filePath = path.resolve(uploadConfig.TMP_FOLDER, filename);
+    const newFilePath = path.resolve(uploadConfig.UPLOADS_FOLDER, filename);
 
     await fs.promises.rename(filePath, newFilePath);
 
-    return avatar;
+    return filename;
   }
 
   async deleteFile(file) {
