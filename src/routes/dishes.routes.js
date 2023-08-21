@@ -18,7 +18,7 @@ dishesRoutes.use(ensureAuthenticated);
 //dishesRoutes.use(checkingIfUserIsAdmin);
 
 dishesRoutes.get("/",  dishesController.index);
-dishesRoutes.post("/", /*checkingIfUserIsAdmin */ upload.single("avatar"), dishesController.create);
+dishesRoutes.post("/", checkingIfUserIsAdmin, upload.single("avatar"), dishesController.create);
 dishesRoutes.put("/:id", checkingIfUserIsAdmin, dishesController.update);
 dishesRoutes.get("/:id", dishesController.show);
 dishesRoutes.delete("/:id", checkingIfUserIsAdmin, dishesController.delete);
